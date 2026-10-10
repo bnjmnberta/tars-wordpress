@@ -297,8 +297,10 @@ $tars_marquee = esc_html( tars_mod( 'marquee' ) );
     <div class="cta__buttons" data-reveal>
       <a href="<?php echo esc_url( tars_whatsapp_url( true ) ); ?>" class="btn btn--primary" target="_blank" rel="noopener">WhatsApp</a>
       <a href="<?php echo esc_url( tars_mod( 'instagram_url' ) ); ?>" class="btn" target="_blank" rel="noopener">Instagram</a>
-      <a href="<?php echo tars_mailto(); ?>" class="btn">Mail</a>
+      <button type="button" class="btn" data-mail-toggle aria-expanded="false" aria-controls="mail">Mail</button>
     </div>
+
+<?php get_template_part( 'inc/mail-box' ); ?>
   </section>
 
 <?php

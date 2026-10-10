@@ -20,7 +20,7 @@ function tars_defaults() {
 		'whatsapp_message' => 'Hola TARS, quiero info',
 		'instagram_url'    => 'https://instagram.com/tars.estudio',
 		'email'            => 'tarssolucionesdigitales@gmail.com',
-		'location'         => 'Buenos Aires, Argentina.',
+		'location'         => 'Santa Fe, Argentina.',
 		'seo_description'  => 'TARS Estudio: logos, diseño web, gestión de redes, flyers/video y marketing inmobiliario.',
 
 		// Portada.

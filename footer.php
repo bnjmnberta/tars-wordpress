@@ -9,7 +9,7 @@ $tars_footer_items = tars_menu_items( has_nav_menu( 'footer' ) ? 'footer' : 'pri
 <footer class="footer">
 	<div class="footer__top">
 		<a href="<?php echo is_front_page() ? '#top' : esc_url( home_url( '/' ) ); ?>" class="footer__logo" aria-label="<?php bloginfo( 'name' ); ?>, volver arriba">
-			<img src="<?php echo tars_uri( 'assets/logo-lockup.png' ); ?>" alt="TARS Soluciones Digitales">
+			<img src="<?php echo tars_uri( 'assets/logo-tars.png' ); ?>" alt="TARS Soluciones Digitales">
 		</a>
 		<nav class="footer__nav" aria-label="Navegación de footer">
 			<?php foreach ( $tars_footer_items as $item ) : ?>
@@ -19,7 +19,7 @@ $tars_footer_items = tars_menu_items( has_nav_menu( 'footer' ) ? 'footer' : 'pri
 		<div class="footer__social">
 			<a href="<?php echo esc_url( tars_mod( 'instagram_url' ) ); ?>" target="_blank" rel="noopener">Instagram</a>
 			<a href="<?php echo esc_url( tars_whatsapp_url() ); ?>" target="_blank" rel="noopener">WhatsApp</a>
-			<a href="<?php echo tars_mailto(); ?>">Mail</a>
+			<a href="<?php echo esc_url( tars_section_url( 'mail' ) ); ?>">Mail</a>
 		</div>
 	</div>
 	<div class="footer__bottom">

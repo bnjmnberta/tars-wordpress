@@ -54,7 +54,7 @@ $tars_hues = array( 'var(--c-green)', 'var(--c-cyan)', 'var(--c-yellow)', 'var(-
 	<div class="menu__foot">
 		<a class="menu__social" href="<?php echo esc_url( tars_whatsapp_url() ); ?>" target="_blank" rel="noopener" style="--hue:var(--c-green)"><span>WhatsApp</span><span aria-hidden="true">↗</span></a>
 		<a class="menu__social" href="<?php echo esc_url( tars_mod( 'instagram_url' ) ); ?>" target="_blank" rel="noopener" style="--hue:var(--c-blue)"><span>Instagram</span><span aria-hidden="true">↗</span></a>
-		<a class="menu__social" href="<?php echo tars_mailto(); ?>" style="--hue:var(--c-yellow)"><span>Mail</span><span aria-hidden="true">↗</span></a>
+		<a class="menu__social" href="<?php echo esc_url( tars_section_url( 'mail' ) ); ?>" data-menu-link style="--hue:var(--c-yellow)"><span>Mail</span><span aria-hidden="true">↗</span></a>
 	</div>
 </div>
 

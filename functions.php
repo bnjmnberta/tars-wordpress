@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.1' );
+define( 'TARS_VERSION', '1.0.2' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
@@ -54,6 +54,10 @@ function tars_assets() {
 		$deps[] = 'opentype';
 	}
 	wp_enqueue_script( 'tars-main', $theme . '/js/main.js', $deps, filemtime( $dir . '/js/main.js' ), true );
+	if ( is_front_page() ) {
+		// the mail composer under the contact buttons
+		wp_enqueue_script( 'tars-mail', $theme . '/js/mail.js', array( 'tars-main' ), filemtime( $dir . '/js/mail.js' ), true );
+	}
 }
 
 add_filter( 'wp_resource_hints', 'tars_resource_hints', 10, 2 );
