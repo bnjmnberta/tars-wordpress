@@ -7,10 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.2' );
+define( 'TARS_VERSION', '1.0.3' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/inc/mail-send.php';
 
 add_action( 'after_setup_theme', 'tars_setup' );
 function tars_setup() {

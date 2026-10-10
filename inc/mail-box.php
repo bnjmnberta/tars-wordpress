@@ -1,6 +1,7 @@
 <?php
 /**
- * The mail composer that opens under the contact buttons (js/mail.js). Same markup as the static site.
+ * The mail composer that opens under the contact buttons (js/mail.js). Same markup as the static site;
+ * "Enviar mail" posts to inc/mail-send.php through admin-ajax.
  */
 ?>
     <div class="mailbox" id="mail">
@@ -11,7 +12,7 @@
             <p class="mailbox__lead">Completá lo que puedas y, cuando esté listo, lo abrís en tu correo o en Gmail con todo cargado.</p>
           </header>
 
-            <form class="mailform" id="mailform" data-to="<?php echo esc_attr( sanitize_email( tars_mod( 'email' ) ) ); ?>" novalidate>
+            <form class="mailform" id="mailform" data-to="<?php echo esc_attr( sanitize_email( tars_mod( 'email' ) ) ); ?>" data-mode="wp" data-endpoint="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'tars_mail' ) ); ?>" novalidate>
 
               <fieldset class="field">
                 <legend>¿Qué necesitás?</legend>
@@ -40,13 +41,16 @@
               <div class="field-row">
                 <div class="field">
                   <label for="f-email">Tu mail</label>
-                  <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email">
+                  <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="e-email">
+                  <p class="field__error" id="e-email" hidden>Revisá el mail: parece incompleto.</p>
                 </div>
                 <div class="field">
                   <label for="f-phone">WhatsApp o teléfono</label>
                   <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel">
                 </div>
               </div>
+              <p class="field__hint field__hint--row">Dejanos al menos un mail o un WhatsApp para poder responderte.</p>
+              <p class="field__error" id="e-contact" hidden>Completá tu mail o tu WhatsApp para poder responderte.</p>
 
               <div class="field">
                 <label for="f-subject">Título del mail</label>
@@ -78,17 +82,31 @@
                 </div>
               </div>
 
+              <div class="hp" aria-hidden="true"><label>No completar este campo<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
               <div class="mailactions">
-                <button type="button" class="btn btn--primary" data-act="mailto"><span>Abrir en mi correo</span> <span aria-hidden="true">→</span></button>
-                <button type="button" class="btn" data-act="gmail"><span>Abrir en Gmail</span> <span aria-hidden="true">↗</span></button>
-                <button type="button" class="btn" data-act="copy"><span>Copiar mensaje</span></button>
+                <button type="button" class="btn btn--primary mailsend" data-act="send"><span data-send-label>Enviar mail</span> <span aria-hidden="true">→</span></button>
               </div>
               <p class="mailstatus" role="status" aria-live="polite" data-status></p>
+              <div class="mailalt">
+                <p>¿Preferís mandarlo vos desde tu correo?</p>
+                <div class="mailalt__btns">
+                  <button type="button" class="btn btn--small" data-act="mailto"><span>Abrir en mi correo</span></button>
+                  <button type="button" class="btn btn--small" data-act="gmail"><span>Abrir en Gmail</span> <span aria-hidden="true">↗</span></button>
+                  <button type="button" class="btn btn--small" data-act="copy"><span>Copiar mensaje</span></button>
+                </div>
+              </div>
               <div class="mailfoot">
                 <p>¿Preferís hablar? Escribinos por <a href="<?php echo esc_url( tars_whatsapp_url( true ) ); ?>" target="_blank" rel="noopener">WhatsApp</a>.</p>
                 <button type="reset" class="mailform__reset">Borrar todo</button>
               </div>
             </form>
+
+            <div class="mailthanks" id="mail-thanks" tabindex="-1" hidden>
+              <h3>¡Mail enviado!</h3>
+              <p>Recibimos tu mensaje. Te respondemos por mail o por WhatsApp lo antes posible.</p>
+              <button type="button" class="btn" data-again>Escribir otro</button>
+            </div>
         </div>
       </div>
     </div>
