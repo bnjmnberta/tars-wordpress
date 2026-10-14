@@ -231,9 +231,10 @@ $tars_marquee = esc_html( tars_mod( 'marquee' ) );
             <h3><?php echo esc_html( tars_mod( 'service_5_title' ) ); ?></h3>
             <div class="stack__expand">
               <p class="stack__why"><?php echo tars_rich( 'service_5_text' ); ?></p>
-            </div>            <div class="stack__cta">
-              <a href="<?php echo esc_url( tars_section_url( 'contacto' ) ); ?>" class="btn"><?php echo esc_html( tars_mod( 'service_cta' ) ); ?> <span aria-hidden="true">→</span></a>
             </div>
+          </div>
+          <div class="stack__cta">
+            <a href="<?php echo esc_url( tars_section_url( 'contacto' ) ); ?>" class="btn"><?php echo esc_html( tars_mod( 'service_cta' ) ); ?> <span aria-hidden="true">→</span></a>
           </div>
         </div>
         </article>

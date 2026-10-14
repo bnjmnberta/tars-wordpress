@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.6' );
+define( 'TARS_VERSION', '1.0.7' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
@@ -75,6 +75,7 @@ function tars_resource_hints( $urls, $relation ) {
 
 add_action( 'wp_head', 'tars_head_extras', 2 );
 function tars_head_extras() {
+	echo '<meta name="theme-color" content="#0a0a0a">' . "\n";
 	echo '<noscript><style>.loader{display:none}[data-reveal]{opacity:1;transform:none}.hero__bgline i{transform:none}</style></noscript>' . "\n";
 
 	if ( ! has_site_icon() ) {
