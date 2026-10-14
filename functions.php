@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.5' );
+define( 'TARS_VERSION', '1.0.6' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
@@ -78,7 +78,10 @@ function tars_head_extras() {
 	echo '<noscript><style>.loader{display:none}[data-reveal]{opacity:1;transform:none}.hero__bgline i{transform:none}</style></noscript>' . "\n";
 
 	if ( ! has_site_icon() ) {
-		echo '<link rel="icon" href="' . esc_url( get_template_directory_uri() . '/assets/favicon.png' ) . '">' . "\n";
+		$icons = get_template_directory_uri() . '/assets';
+		echo '<link rel="icon" href="' . esc_url( $icons . '/favicon.png' ) . '" sizes="64x64" type="image/png">' . "\n";
+		echo '<link rel="icon" href="' . esc_url( $icons . '/favicon.svg' ) . '" type="image/svg+xml">' . "\n";
+		echo '<link rel="apple-touch-icon" href="' . esc_url( $icons . '/apple-touch-icon.png' ) . '">' . "\n";
 	}
 
 	// description fallback, only when no SEO plugin is managing it

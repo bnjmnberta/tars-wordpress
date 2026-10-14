@@ -22,6 +22,8 @@ SITE_FILES = [
     "js/loader.js",
     "js/mail.js",
     "assets/favicon.png",
+    "assets/favicon.svg",
+    "assets/apple-touch-icon.png",
     "assets/logo-mark-nav.png",
     "assets/logo-lockup.png",
     "assets/logo-tars.png",
