@@ -1,6 +1,12 @@
+---
+type: referencia
+tags: [tars/producto, wordpress, sub/producto-web]
+aliases: [Tema de WordPress]
+---
+
 # TARS — tema de WordPress
 
-Tema de WordPress de TARS Soluciones Digitales. La portada es la misma página que el sitio estático
+Tema de WordPress de [[TARS]] (TARS Soluciones Digitales). Mapa: [[MOC Clientes y Producto]]. La portada es la misma página que el sitio estático
 ([bnjmnberta/tars-web](https://github.com/bnjmnberta/tars-web)): mismo HTML, CSS, animaciones y
 archivos. Los textos, el WhatsApp, el mail y los menús se editan desde el panel de WordPress.
 
