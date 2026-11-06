@@ -29,6 +29,9 @@ function tars_customize_register( $wp_customize ) {
 				'email'            => array( 'Mail', 'email' ),
 				'location'         => array( 'Ubicación (pie de página)', 'text' ),
 				'seo_description'  => array( 'Descripción para Google (se ignora si usás Rank Math o Yoast)', 'textarea' ),
+				'ga_id'            => array( 'Código de Google Analytics 4 (empieza con G-, dejalo vacío para no medir)', 'ga' ),
+				'turnstile_site'   => array( 'Cloudflare Turnstile — clave del sitio (anti-bots del formulario de Mail, opcional)', 'key' ),
+				'turnstile_secret' => array( 'Cloudflare Turnstile — clave secreta', 'key' ),
 			),
 		),
 		'tars_hero'     => array(
@@ -81,6 +84,8 @@ function tars_customize_register( $wp_customize ) {
 		'textarea' => 'sanitize_textarea_field',
 		'url'      => 'esc_url_raw',
 		'email'    => 'sanitize_email',
+		'ga'       => 'tars_sanitize_ga_id',
+		'key'      => 'tars_sanitize_key_text',
 	);
 	$priority  = 0;
 
@@ -107,10 +112,21 @@ function tars_customize_register( $wp_customize ) {
 				array(
 					'label'    => $label,
 					'section'  => $section_id,
-					'type'     => $type,
+					'type'     => in_array( $type, array( 'ga', 'key' ), true ) ? 'text' : $type,
 					'priority' => ++$priority,
 				)
 			);
 		}
 	}
+}
+
+/** A Google Analytics 4 measurement ID (G-XXXXXXXXXX), or nothing. */
+function tars_sanitize_ga_id( $value ) {
+	$value = strtoupper( trim( (string) $value ) );
+	return preg_match( '/^G-[A-Z0-9]{6,}$/', $value ) ? $value : '';
+}
+
+/** Keys from a third-party service: letters, digits, dash and underscore only. */
+function tars_sanitize_key_text( $value ) {
+	return preg_replace( '/[^A-Za-z0-9_\-]/', '', trim( (string) $value ) );
 }

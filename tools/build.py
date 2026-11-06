@@ -21,6 +21,7 @@ SITE_FILES = [
     "js/main.js",
     "js/loader.js",
     "js/mail.js",
+    "js/analytics.js",
     "assets/favicon.png",
     "assets/favicon.svg",
     "assets/apple-touch-icon.png",
@@ -35,7 +36,7 @@ SITE_FILES = [
 SITE_DIRS = ["assets/fonts", "assets/trail"]
 
 # repo files that are not part of the theme
-NOT_THEME = {".git", ".gitignore", "dist", "tools", "README.md"}
+NOT_THEME = {".git", ".gitignore", "dist", "tools", "README.md", "SEGURIDAD.md"}
 
 
 def sync(site: Path) -> None:

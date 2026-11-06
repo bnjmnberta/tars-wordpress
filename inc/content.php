@@ -22,6 +22,9 @@ function tars_defaults() {
 		'email'            => 'tarssolucionesdigitales@gmail.com',
 		'location'         => 'Santa Fe, Argentina.',
 		'seo_description'  => 'TARS Estudio: logos, diseño web, gestión de redes, flyers/video y marketing inmobiliario.',
+		'ga_id'           => '',
+		'turnstile_site'  => '',
+		'turnstile_secret'=> '',
 
 		// Portada.
 		'hero_line_1'      => 'TARS',

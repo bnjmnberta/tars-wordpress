@@ -7,10 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.7' );
+define( 'TARS_VERSION', '1.0.8' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/inc/security.php';
 require get_template_directory() . '/inc/mail-send.php';
 
 add_action( 'after_setup_theme', 'tars_setup' );
@@ -55,6 +56,13 @@ function tars_assets() {
 		$deps[] = 'opentype';
 	}
 	wp_enqueue_script( 'tars-main', $theme . '/js/main.js', $deps, filemtime( $dir . '/js/main.js' ), true );
+	if ( tars_ga_id() ) {
+		wp_enqueue_script( 'tars-analytics', $theme . '/js/analytics.js', array( 'tars-main' ), filemtime( $dir . '/js/analytics.js' ), true );
+	}
+	if ( is_front_page() && tars_turnstile_site_key() ) {
+		// Cloudflare Turnstile: the anti-bot check of the mail form (only when both keys are set)
+		wp_enqueue_script( 'turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', array(), null, array( 'strategy' => 'defer', 'in_footer' => true ) );
+	}
 	if ( is_front_page() ) {
 		// the mail composer under the contact buttons
 		wp_enqueue_script( 'tars-mail', $theme . '/js/mail.js', array( 'tars-main' ), filemtime( $dir . '/js/mail.js' ), true );
@@ -73,9 +81,23 @@ function tars_resource_hints( $urls, $relation ) {
 	return $urls;
 }
 
+/**
+ * The Google Analytics 4 ID, or '' when none is set or the visitor is someone who edits the site
+ * (their own visits are not counted).
+ */
+function tars_ga_id() {
+	if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ) {
+		return '';
+	}
+	return (string) tars_mod( 'ga_id' );
+}
+
 add_action( 'wp_head', 'tars_head_extras', 2 );
 function tars_head_extras() {
 	echo '<meta name="theme-color" content="#0a0a0a">' . "\n";
+	if ( tars_ga_id() ) {
+		echo '<meta name="tars-ga" content="' . esc_attr( tars_ga_id() ) . '">' . "\n";
+	}
 	echo '<noscript><style>.loader{display:none}[data-reveal]{opacity:1;transform:none}.hero__bgline i{transform:none}</style></noscript>' . "\n";
 
 	if ( ! has_site_icon() ) {
@@ -137,3 +159,10 @@ function tars_language_attributes( $output ) {
 // The site uses no emoji: skip WordPress's emoji script and styles.
 remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 remove_action( 'wp_print_styles', 'print_emoji_styles' );
+
+/** The Turnstile site key, only when the secret key is set too. */
+function tars_turnstile_site_key() {
+	$site   = preg_replace( '/[^A-Za-z0-9_\-]/', '', (string) tars_mod( 'turnstile_site' ) );
+	$secret = (string) tars_mod( 'turnstile_secret' );
+	return ( $site && $secret ) ? $site : '';
+}

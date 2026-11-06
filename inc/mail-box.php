@@ -82,6 +82,9 @@
                 </div>
               </div>
 
+<?php if ( tars_turnstile_site_key() ) : ?>
+              <div class="field"><div class="cf-turnstile" data-sitekey="<?php echo esc_attr( tars_turnstile_site_key() ); ?>" data-theme="light" data-language="es"></div></div>
+<?php endif; ?>
               <div class="hp" aria-hidden="true"><label>No completar este campo<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
 
               <div class="mailactions">

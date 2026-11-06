@@ -31,8 +31,19 @@ function tars_send_mail() {
 		wp_send_json_success();
 	}
 
+	// the whole site accepts at most 100 messages a day, whoever sends them
+	$day = (int) get_transient( 'tars_mail_day' );
+	if ( $day >= 100 ) {
+		wp_send_json_error( array( 'message' => 'Hoy se alcanzó el límite de mensajes.' ), 429 );
+	}
+
+	// Cloudflare Turnstile, when it is set up
+	if ( tars_turnstile_site_key() && ! tars_turnstile_ok() ) {
+		wp_send_json_error( array( 'message' => 'No pudimos verificar que sos una persona. Probá de nuevo.' ), 403 );
+	}
+
 	// rate limit per visitor
-	$ip    = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : 'unknown';
+	$ip    = tars_client_ip();
 	$key   = 'tars_mail_' . md5( $ip );
 	$state = get_transient( $key );
 	$state = is_array( $state ) ? $state : array(
@@ -104,5 +115,30 @@ function tars_send_mail() {
 	$state['count'] = (int) $state['count'] + 1;
 	$state['last']  = time();
 	set_transient( $key, $state, HOUR_IN_SECONDS );
+	set_transient( 'tars_mail_day', $day + 1, DAY_IN_SECONDS );
 	wp_send_json_success();
+}
+
+/** Checks the Turnstile token the browser sent against Cloudflare. */
+function tars_turnstile_ok() {
+	$token = isset( $_POST['cf-turnstile-response'] ) ? sanitize_text_field( wp_unslash( $_POST['cf-turnstile-response'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	if ( '' === $token ) {
+		return false;
+	}
+	$response = wp_remote_post(
+		'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+		array(
+			'timeout' => 8,
+			'body'    => array(
+				'secret'   => (string) tars_mod( 'turnstile_secret' ),
+				'response' => $token,
+				'remoteip' => tars_client_ip(),
+			),
+		)
+	);
+	if ( is_wp_error( $response ) ) {
+		return false;
+	}
+	$data = json_decode( wp_remote_retrieve_body( $response ), true );
+	return is_array( $data ) && ! empty( $data['success'] );
 }
