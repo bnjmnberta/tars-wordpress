@@ -25,6 +25,7 @@ SITE_FILES = [
     "assets/favicon.png",
     "assets/favicon.svg",
     "assets/apple-touch-icon.png",
+    "assets/og-image.jpg",
     "assets/logo-mark-nav.png",
     "assets/logo-lockup.png",
     "assets/logo-tars.png",

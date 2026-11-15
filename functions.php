@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.8' );
+define( 'TARS_VERSION', '1.0.9' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
@@ -58,6 +58,8 @@ function tars_assets() {
 	wp_enqueue_script( 'tars-main', $theme . '/js/main.js', $deps, filemtime( $dir . '/js/main.js' ), true );
 	if ( tars_ga_id() ) {
 		wp_enqueue_script( 'tars-analytics', $theme . '/js/analytics.js', array( 'tars-main' ), filemtime( $dir . '/js/analytics.js' ), true );
+		// where the cookie notice links to ('' = no privacy page chosen yet, so no link)
+		wp_add_inline_script( 'tars-analytics', 'window.TARS_PRIVACY_URL=' . wp_json_encode( tars_privacy_url() ) . ';', 'before' );
 	}
 	if ( is_front_page() && tars_turnstile_site_key() ) {
 		// Cloudflare Turnstile: the anti-bot check of the mail form (only when both keys are set)
@@ -92,6 +94,11 @@ function tars_ga_id() {
 	return (string) tars_mod( 'ga_id' );
 }
 
+/** The privacy policy page chosen in Ajustes → Privacidad, or '' when there is none yet. */
+function tars_privacy_url() {
+	return function_exists( 'get_privacy_policy_url' ) ? (string) get_privacy_policy_url() : '';
+}
+
 add_action( 'wp_head', 'tars_head_extras', 2 );
 function tars_head_extras() {
 	echo '<meta name="theme-color" content="#0a0a0a">' . "\n";
@@ -111,6 +118,53 @@ function tars_head_extras() {
 	$seo_plugin = defined( 'WPSEO_VERSION' ) || defined( 'RANK_MATH_VERSION' ) || class_exists( 'RankMath' ) || defined( 'AIOSEO_VERSION' );
 	if ( ! $seo_plugin && is_front_page() ) {
 		echo '<meta name="description" content="' . esc_attr( tars_mod( 'seo_description' ) ) . '">' . "\n";
+
+		// link-preview tags (WhatsApp, Instagram, X) and the structured data of the studio
+		$home  = home_url( '/' );
+		$image = get_template_directory_uri() . '/assets/og-image.jpg';
+		$title = 'TARS — Soluciones Digitales';
+		$desc  = (string) tars_mod( 'seo_description' );
+		$og    = array(
+			'og:type'         => 'website',
+			'og:locale'       => 'es_AR',
+			'og:site_name'    => 'TARS Estudio',
+			'og:title'        => $title,
+			'og:description'  => $desc,
+			'og:url'          => $home,
+			'og:image'        => $image,
+			'og:image:width'  => '1200',
+			'og:image:height' => '630',
+			'og:image:alt'    => 'TARS Estudio, estudio digital de ' . tars_mod( 'location' ),
+		);
+		foreach ( $og as $prop => $value ) {
+			echo '<meta property="' . esc_attr( $prop ) . '" content="' . esc_attr( $value ) . '">' . "\n";
+		}
+		echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+		echo '<meta name="twitter:title" content="' . esc_attr( $title ) . '">' . "\n";
+		echo '<meta name="twitter:description" content="' . esc_attr( $desc ) . '">' . "\n";
+		echo '<meta name="twitter:image" content="' . esc_url( $image ) . '">' . "\n";
+
+		$schema = array(
+			'@context'      => 'https://schema.org',
+			'@type'         => 'ProfessionalService',
+			'name'          => 'TARS Estudio',
+			'alternateName' => $title,
+			'url'           => $home,
+			'logo'          => get_template_directory_uri() . '/assets/logo-tars.png',
+			'image'         => $image,
+			'description'   => $desc,
+			'areaServed'    => 'AR',
+			'address'       => array(
+				'@type'           => 'PostalAddress',
+				'addressLocality' => 'Santa Fe',
+				'addressRegion'   => 'Santa Fe',
+				'addressCountry'  => 'AR',
+			),
+		);
+		if ( tars_mod( 'instagram_url' ) ) {
+			$schema['sameAs'] = array( (string) tars_mod( 'instagram_url' ) );
+		}
+		echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) . '</script>' . "\n";
 	}
 }
 

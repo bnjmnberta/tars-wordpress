@@ -33,6 +33,11 @@ hosting y en WordPress. Antes de lanzar, repasá la lista completa.
 8. **Base de datos:** una base y un usuario propios para este sitio, con contraseña distinta a la de otros sitios.
 9. **Correo del dominio:** registros SPF, DKIM y DMARC (Hostinger los muestra en la sección de correo).
 10. **Borrar** `readme.html` y `license.txt` de la raíz de WordPress.
+11. **Página de privacidad:** en Ajustes → Privacidad, crear (o elegir) la página de política de privacidad y
+    publicarla. El tema la enlaza en el pie y en el aviso de cookies de Google Analytics. Sin esa página no
+    aparece el enlace.
+12. **Buscadores:** en Ajustes → Lectura, dejar **desmarcado** "Disuadir a los motores de búsqueda"; en Ajustes →
+    Enlaces permanentes, elegir "Nombre de la entrada". Después, enviar `/wp-sitemap.xml` a Search Console.
 
 ### Cloudflare (necesita el dominio propio)
 1. Crear la cuenta gratis, agregar el dominio y delegar los servidores de nombres en NIC Argentina.

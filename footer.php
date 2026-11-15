@@ -24,7 +24,7 @@ $tars_footer_items = tars_menu_items( has_nav_menu( 'footer' ) ? 'footer' : 'pri
 	</div>
 	<div class="footer__bottom">
 		<span>© <span data-year><?php echo esc_html( gmdate( 'Y' ) ); ?></span> TARS — Soluciones Digitales.</span>
-		<span><?php echo esc_html( tars_mod( 'location' ) ); ?></span>
+		<span><?php echo esc_html( tars_mod( 'location' ) ); ?><?php if ( tars_privacy_url() ) : ?> · <a href="<?php echo esc_url( tars_privacy_url() ); ?>">Privacidad</a><?php endif; ?></span>
 	</div>
 </footer>
 
