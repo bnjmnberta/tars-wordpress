@@ -18,6 +18,7 @@ DIST = ROOT / "dist"
 # files the theme takes unchanged from the static site
 SITE_FILES = [
     "css/style.css",
+    "css/fonts.css",
     "js/main.js",
     "js/loader.js",
     "js/mail.js",
@@ -34,7 +35,7 @@ SITE_FILES = [
     "assets/hero-topo-720.mp4",
     "assets/hero-topo-poster.jpg",
 ]
-SITE_DIRS = ["assets/fonts", "assets/trail"]
+SITE_DIRS = ["assets/fonts", "assets/trail", "js/vendor"]
 
 # repo files that are not part of the theme
 NOT_THEME = {".git", ".gitignore", "dist", "tools", "README.md", "SEGURIDAD.md"}

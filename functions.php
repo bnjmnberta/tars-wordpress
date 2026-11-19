@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.11' );
+define( 'TARS_VERSION', '1.0.12' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
@@ -39,19 +39,20 @@ function tars_assets() {
 	$theme = get_template_directory_uri();
 	$dir   = get_template_directory();
 
-	wp_enqueue_style( 'tars-fonts', 'https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap', array(), null );
+	// fonts and libraries are served from the theme itself: no request to Google or to a CDN
+	wp_enqueue_style( 'tars-fonts', $theme . '/css/fonts.css', array(), filemtime( $dir . '/css/fonts.css' ) );
 	wp_enqueue_style( 'tars-site', $theme . '/css/style.css', array( 'tars-fonts' ), filemtime( $dir . '/css/style.css' ) );
 	wp_enqueue_style( 'tars-wp', $theme . '/css/wp.css', array( 'tars-site' ), filemtime( $dir . '/css/wp.css' ) );
 
-	wp_enqueue_script( 'gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', array(), null, true );
-	wp_enqueue_script( 'gsap-scrolltrigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', array( 'gsap' ), null, true );
-	wp_enqueue_script( 'lenis', 'https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js', array(), null, true );
+	wp_enqueue_script( 'gsap', $theme . '/js/vendor/gsap.min.js', array(), '3.12.5', true );
+	wp_enqueue_script( 'gsap-scrolltrigger', $theme . '/js/vendor/ScrollTrigger.min.js', array( 'gsap' ), '3.12.5', true );
+	wp_enqueue_script( 'lenis', $theme . '/js/vendor/lenis.min.js', array(), '1.3.26', true );
 
 	$deps = array( 'gsap', 'gsap-scrolltrigger', 'lenis' );
 	if ( is_front_page() ) {
 		// loading screen + the hand-written card copy only exist on the home page
 		wp_enqueue_script( 'tars-loader', $theme . '/js/loader.js', array( 'gsap' ), filemtime( $dir . '/js/loader.js' ), true );
-		wp_enqueue_script( 'opentype', 'https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js', array(), null, true );
+		wp_enqueue_script( 'opentype', $theme . '/js/vendor/opentype.min.js', array(), '1.3.4', true );
 		$deps[] = 'tars-loader';
 		$deps[] = 'opentype';
 	}
@@ -69,36 +70,6 @@ function tars_assets() {
 		// the mail composer under the contact buttons
 		wp_enqueue_script( 'tars-mail', $theme . '/js/mail.js', array( 'tars-main' ), filemtime( $dir . '/js/mail.js' ), true );
 	}
-}
-
-/*
- * Subresource Integrity for the libraries loaded from a CDN: if the file changes at the CDN, the browser
- * refuses to run it. The hashes belong to the exact versions enqueued above; update both together.
- */
-add_filter( 'script_loader_tag', 'tars_script_integrity', 10, 2 );
-function tars_script_integrity( $tag, $handle ) {
-	$hashes = array(
-		'gsap'              => 'sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt',
-		'gsap-scrolltrigger' => 'sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d',
-		'lenis'             => 'sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw',
-		'opentype'          => 'sha384-3TaxGqyHrMuRIWY5Z5WHNIzgNRqGIUJE+mk6tm+g1wkm9Ux2kUyOLfy9AsNWXA6u',
-	);
-	if ( ! isset( $hashes[ $handle ] ) || false !== strpos( $tag, ' integrity=' ) ) {
-		return $tag;
-	}
-	return str_replace( ' src=', ' integrity="' . esc_attr( $hashes[ $handle ] ) . '" crossorigin="anonymous" src=', $tag );
-}
-
-add_filter( 'wp_resource_hints', 'tars_resource_hints', 10, 2 );
-function tars_resource_hints( $urls, $relation ) {
-	if ( 'preconnect' === $relation ) {
-		$urls[] = 'https://fonts.googleapis.com';
-		$urls[] = array(
-			'href'        => 'https://fonts.gstatic.com',
-			'crossorigin' => 'anonymous',
-		);
-	}
-	return $urls;
 }
 
 /**
