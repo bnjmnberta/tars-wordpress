@@ -21,6 +21,8 @@ function tars_defaults() {
 		'instagram_url'    => 'https://instagram.com/tars.estudio',
 		'email'            => 'tarssolucionesdigitales@gmail.com',
 		'location'         => 'Santa Fe, Argentina.',
+		'resp_name'        => '',
+		'resp_address'     => '',
 		'seo_description'  => 'TARS Estudio: logos, diseño web, gestión de redes, flyers/video y marketing inmobiliario.',
 		'ga_id'           => '',
 		'turnstile_site'  => '',

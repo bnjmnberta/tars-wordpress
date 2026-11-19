@@ -22,7 +22,7 @@ archivos. Los textos, el WhatsApp, el mail y los menús se editan desde el panel
 
 **Apariencia → Personalizar → TARS**:
 
-- **Contacto y datos**: número de WhatsApp, mensaje inicial, Instagram, mail, ubicación y descripción para Google.
+- **Contacto y datos**: número de WhatsApp, mensaje inicial, Instagram, mail, ubicación, descripción para Google y el responsable de los datos (nombre y domicilio, que la ley de protección de datos exige mostrar junto al formulario y en el pie).
 - **Portada**: textos del hero y de la cinta.
 - **Servicios**: título y texto de las 5 tarjetas. Las palabras entre `*asteriscos*` salen resaltadas en la tipografía itálica.
 - **Cómo trabajamos**: título y los 4 pasos.

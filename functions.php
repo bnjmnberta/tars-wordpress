@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.12' );
+define( 'TARS_VERSION', '1.0.13' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
@@ -81,6 +81,13 @@ function tars_ga_id() {
 		return '';
 	}
 	return (string) tars_mod( 'ga_id' );
+}
+
+/** "Nombre, domicilio" of the person responsible for the contact data, or '' until both are set in Personalizar. */
+function tars_responsible() {
+	$name    = trim( (string) tars_mod( 'resp_name' ) );
+	$address = trim( (string) tars_mod( 'resp_address' ) );
+	return ( '' !== $name && '' !== $address ) ? $name . ', ' . $address : '';
 }
 
 /** The privacy policy page chosen in Ajustes → Privacidad, or '' when there is none yet. */

@@ -28,6 +28,8 @@ function tars_customize_register( $wp_customize ) {
 				'instagram_url'    => array( 'Instagram (link completo)', 'url' ),
 				'email'            => array( 'Mail', 'email' ),
 				'location'         => array( 'Ubicación (pie de página)', 'text' ),
+				'resp_name'        => array( 'Responsable de los datos: nombre completo (aparece junto al formulario y en el pie)', 'text' ),
+				'resp_address'     => array( 'Responsable de los datos: domicilio', 'text' ),
 				'seo_description'  => array( 'Descripción para Google (se ignora si usás Rank Math o Yoast)', 'textarea' ),
 				'ga_id'            => array( 'Código de Google Analytics 4 (empieza con G-, dejalo vacío para no medir)', 'ga' ),
 				'turnstile_site'   => array( 'Cloudflare Turnstile — clave del sitio (anti-bots del formulario de Mail, opcional)', 'key' ),
