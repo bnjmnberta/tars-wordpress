@@ -33,6 +33,22 @@ Sin menú asignado se usan Servicios / Proceso / Contacto.
 
 Páginas, entradas de blog, búsqueda y 404 usan el mismo estilo. Es compatible con Rank Math o Yoast para SEO.
 
+## Medición, privacidad y buscadores
+
+- **Google Analytics 4:** pegar el código `G-...` en *Personalizar → TARS → Contacto y datos*. Solo mide si la
+  persona acepta el aviso de cookies, y no cuenta las visitas de quien edita el sitio.
+- **Página de privacidad:** crearla en *Ajustes → Privacidad*. El tema la enlaza en el pie y en el aviso de cookies.
+- **Vista previa al compartir:** el tema agrega las etiquetas Open Graph y Twitter (imagen `assets/og-image.jpg`) y los
+  datos estructurados del estudio en la portada, salvo que haya un plugin de SEO activo.
+- **Buscadores:** WordPress ya genera `/wp-sitemap.xml`. Dejar desmarcado *Ajustes → Lectura → Disuadir a los motores
+  de búsqueda*.
+
+## Seguridad
+
+El tema cierra XML-RPC y las listas de usuarios, limita los intentos de login, manda encabezados de seguridad y
+protege el formulario de Mail (nonce, campo oculto, límites y Cloudflare Turnstile opcional). Lo que hay que hacer
+fuera del tema (actualizaciones, 2FA, copias, Cloudflare) está en [`SEGURIDAD.md`](SEGURIDAD.md).
+
 ## Estructura
 
 | Archivo | Qué es |
@@ -42,6 +58,9 @@ Páginas, entradas de blog, búsqueda y 404 usan el mismo estilo. Es compatible 
 | `page.php`, `single.php`, `index.php`, `404.php` | Páginas, entradas, blog/búsqueda, error |
 | `inc/content.php` | Textos por defecto y helpers |
 | `inc/customizer.php` | Panel **TARS** del Personalizador |
+| `inc/security.php` | Endurecimiento: XML-RPC, usuarios, login, encabezados |
+| `inc/mail-send.php`, `inc/mail-box.php` | Formulario de Mail: envío y marcado |
+| `SEGURIDAD.md` | Lista de seguridad para antes y después de lanzar |
 | `css/style.css`, `js/`, `assets/` | Compartidos con el sitio estático, sin cambios |
 | `css/wp.css` | Estilos solo de WordPress (páginas, blog, barra de admin) |
 | `tools/build.py` | Arma `dist/tars.zip` |
