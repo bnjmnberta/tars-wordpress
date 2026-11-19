@@ -87,6 +87,11 @@
 <?php endif; ?>
               <div class="hp" aria-hidden="true"><label>No completar este campo<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
 
+              <div class="mailnote">
+                <p>Usamos tus datos solo para responderte. Tu nombre, tu mensaje y un medio de contacto (correo o teléfono) son obligatorios: sin ellos no podemos responder. Podés pedirnos acceso, rectificación o supresión cuando quieras.<?php if ( tars_privacy_url() ) : ?> Más información en la <a href="<?php echo esc_url( tars_privacy_url() ); ?>">política de privacidad</a>.<?php endif; ?></p>
+                <p>El titular de los datos personales tiene la facultad de ejercer el derecho de acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses, salvo que se acredite un interés legítimo al efecto conforme lo establecido en el artículo 14, inciso 3 de la Ley Nº 25.326.</p>
+              </div>
+
               <div class="mailactions">
                 <button type="button" class="btn btn--primary mailsend" data-act="send"><span data-send-label>Enviar mail</span> <span aria-hidden="true">→</span></button>
               </div>
