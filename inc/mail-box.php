@@ -12,7 +12,7 @@
             <p class="mailbox__lead">Completá lo que puedas y, cuando esté listo, lo abrís en tu correo o en Gmail con todo cargado.</p>
           </header>
 
-            <form class="mailform" id="mailform" data-to="<?php echo esc_attr( sanitize_email( tars_mod( 'email' ) ) ); ?>" data-mode="wp" data-endpoint="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'tars_mail' ) ); ?>" novalidate>
+            <form class="mailform" id="mailform" method="post" data-to="<?php echo esc_attr( sanitize_email( tars_mod( 'email' ) ) ); ?>" data-mode="wp" data-endpoint="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'tars_mail' ) ); ?>" novalidate>
 
               <fieldset class="field">
                 <legend>¿Qué necesitás?</legend>

@@ -47,6 +47,15 @@ hosting y en WordPress. Antes de lanzar, repasá la lista completa.
     </FilesMatch>
     ```
     Si se activa `WP_DEBUG_LOG`, el registro queda en `wp-content/debug.log` y cualquiera puede descargarlo sin esta regla.
+14. **Encabezados también en imágenes, CSS y JS.** El tema los manda en las páginas de WordPress, pero no en los
+    archivos estáticos que sirve el servidor. Para cubrirlos, agregar al mismo `.htaccess`:
+    ```apache
+    <IfModule mod_headers.c>
+      Header always set X-Content-Type-Options "nosniff"
+      Header always set X-Frame-Options "SAMEORIGIN"
+      Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    </IfModule>
+    ```
 
 ### Cloudflare (necesita el dominio propio)
 1. Crear la cuenta gratis, agregar el dominio y cambiar los servidores de nombres del dominio (en Hostinger) por los que da Cloudflare.
