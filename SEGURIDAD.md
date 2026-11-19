@@ -7,7 +7,8 @@ hosting y en WordPress. Antes de lanzar, repasá la lista completa.
 
 - XML-RPC apagado (`xmlrpc.php` responde 403).
 - Las listas de usuarios están cerradas: `?author=1` redirige al inicio y `/wp-json/wp/v2/users` no existe para
-  quien no entró.
+  quien no entró. Tampoco salen los autores en el sitemap, en el feed RSS ni en oEmbed.
+- Las bibliotecas que se cargan desde un CDN (GSAP, Lenis, opentype.js) llevan firma de integridad (SRI).
 - Los errores del login son genéricos: no dicen si falló el usuario o la clave.
 - Límite de intentos en `wp-login.php`: 5 fallos en 15 minutos bloquean a esa persona durante 15 minutos.
 - Encabezados de seguridad: `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
@@ -39,8 +40,16 @@ hosting y en WordPress. Antes de lanzar, repasá la lista completa.
 12. **Buscadores:** en Ajustes → Lectura, dejar **desmarcado** "Disuadir a los motores de búsqueda"; en Ajustes →
     Enlaces permanentes, elegir "Nombre de la entrada". Después, enviar `/wp-sitemap.xml` a Search Console.
 
+13. **Archivos que no deben poder bajarse.** Agregar al `.htaccess` de la raíz de WordPress:
+    ```apache
+    <FilesMatch "^(debug\.log|readme\.html|license\.txt|wp-config\.php)$">
+      Require all denied
+    </FilesMatch>
+    ```
+    Si se activa `WP_DEBUG_LOG`, el registro queda en `wp-content/debug.log` y cualquiera puede descargarlo sin esta regla.
+
 ### Cloudflare (necesita el dominio propio)
-1. Crear la cuenta gratis, agregar el dominio y delegar los servidores de nombres en NIC Argentina.
+1. Crear la cuenta gratis, agregar el dominio y cambiar los servidores de nombres del dominio (en Hostinger) por los que da Cloudflare.
 2. En SSL/TLS, modo **Full (strict)**.
 3. En Seguridad → Reglas WAF → Límite de pedidos: 10 pedidos por minuto por IP a `/wp-login.php`.
 4. Activar **Bot Fight Mode**.

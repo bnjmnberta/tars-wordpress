@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TARS_VERSION', '1.0.9' );
+define( 'TARS_VERSION', '1.0.10' );
 
 require get_template_directory() . '/inc/content.php';
 require get_template_directory() . '/inc/customizer.php';
@@ -69,6 +69,24 @@ function tars_assets() {
 		// the mail composer under the contact buttons
 		wp_enqueue_script( 'tars-mail', $theme . '/js/mail.js', array( 'tars-main' ), filemtime( $dir . '/js/mail.js' ), true );
 	}
+}
+
+/*
+ * Subresource Integrity for the libraries loaded from a CDN: if the file changes at the CDN, the browser
+ * refuses to run it. The hashes belong to the exact versions enqueued above; update both together.
+ */
+add_filter( 'script_loader_tag', 'tars_script_integrity', 10, 2 );
+function tars_script_integrity( $tag, $handle ) {
+	$hashes = array(
+		'gsap'              => 'sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt',
+		'gsap-scrolltrigger' => 'sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d',
+		'lenis'             => 'sha384-jqpi9VmOdhyLoLURgjCn7EpnG9BbnHW57ibIZoeaIU+erWDH3k8fQQg0xH2ySjnw',
+		'opentype'          => 'sha384-3TaxGqyHrMuRIWY5Z5WHNIzgNRqGIUJE+mk6tm+g1wkm9Ux2kUyOLfy9AsNWXA6u',
+	);
+	if ( ! isset( $hashes[ $handle ] ) || false !== strpos( $tag, ' integrity=' ) ) {
+		return $tag;
+	}
+	return str_replace( ' src=', ' integrity="' . esc_attr( $hashes[ $handle ] ) . '" crossorigin="anonymous" src=', $tag );
 }
 
 add_filter( 'wp_resource_hints', 'tars_resource_hints', 10, 2 );

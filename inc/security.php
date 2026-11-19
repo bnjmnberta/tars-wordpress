@@ -122,6 +122,33 @@ add_filter(
 	}
 );
 
+// WordPress's own sitemap lists /author/<login>/ for every user with a published post
+add_filter(
+	'wp_sitemaps_add_provider',
+	function ( $provider, $name ) {
+		return 'users' === $name ? false : $provider;
+	},
+	10,
+	2
+);
+
+// the RSS feed prints the author's display name (often the login) in every item
+add_filter(
+	'the_author',
+	function ( $name ) {
+		return is_feed() ? get_bloginfo( 'name' ) : $name;
+	}
+);
+
+// oEmbed answers with author_name and author_url
+add_filter(
+	'oembed_response_data',
+	function ( $data ) {
+		unset( $data['author_name'], $data['author_url'] );
+		return $data;
+	}
+);
+
 // the login form must not say whether the user or the password was wrong
 add_filter(
 	'login_errors',
@@ -180,6 +207,7 @@ add_action(
 		header( 'Referrer-Policy: strict-origin-when-cross-origin' );
 		header( 'Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()' );
 		header( 'Cross-Origin-Opener-Policy: same-origin' );
+		header_remove( 'X-Powered-By' ); // do not announce the PHP version
 		if ( is_ssl() ) {
 			header( 'Strict-Transport-Security: max-age=15552000' ); // six months; add includeSubDomains once every subdomain has https
 		}
